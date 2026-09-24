@@ -11,8 +11,9 @@ Live site: https://atindahhillary.github.io/STC-HUB-CONCEPT-/
 - `assets/js/data.js`: all zone content, financial figures, targets and timeline data in one place. Update numbers here and the diagrams redraw.
 - `assets/js/diagrams.js`: inline SVG renderers (isometric building, loop, funnel, Gantt, charts, Africa map).
 - `assets/img/`: AI concept visualisations made in Canva, plus one Creative Commons photo of Mombasa Old Town (credited on the page).
+- `assets/video/`: the hero background, a 14.5 second muted loop cut from "Aerial view of sand beach, top view sea waves" (Nature video, HD - 4K, CC BY 3.0, Wikimedia Commons), trimmed, slowed and looped. It pauses for reduced-motion and data-saver users and when scrolled out of view.
 
-Plain HTML, CSS and JavaScript. No build step. Fonts: Inter (Google Fonts). Icons: Phosphor.
+Plain HTML, CSS and JavaScript. No build step. Ocean theme: sea-mist surfaces, deep-ocean ink, coral actions. Fonts: Inter (Google Fonts). Icons: Phosphor.
 
 ## About the figures
 

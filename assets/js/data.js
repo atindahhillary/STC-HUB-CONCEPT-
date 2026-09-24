@@ -97,14 +97,14 @@ window.SAVIT = {
     milestone: 7,
     milestoneLabel: "Opening May 2027",
     lanes: [
-      { t: "1  Design and fundraising", s: "concept, survey, BoQ, partners", a: 0, b: 4, c: "#0f5c63", m: "Structural survey, BoQ, first close" },
-      { t: "Approvals", s: "county, NEMA, NCA", a: 1, b: 6, c: "#5a6d72", m: "Pre-application, EIA, NCA, building plans" },
+      { t: "1  Design and fundraising", s: "concept, survey, BoQ, partners", a: 0, b: 4, c: "#0b4f71", m: "Structural survey, BoQ, first close" },
+      { t: "Approvals", s: "county, NEMA, NCA", a: 1, b: 6, c: "#587489", m: "Pre-application, EIA, NCA, building plans" },
       { t: "2  Container transformation", s: "off-site fabrication", a: 3, b: 7, c: "#b5412b", m: "Cut, frame, coat, insulate, stack" },
       { t: "3  Equipment and technology", s: "labs, studio, network, solar", a: 5, b: 7, c: "#e8622c", m: "Fit-out", dark: true },
-      { t: "4  Programme development", s: "core team hired Feb", a: 3, b: 7, c: "#127c86", m: "Curriculum, mentors, school MoUs" },
+      { t: "4  Programme development", s: "core team hired Feb", a: 3, b: 7, c: "#0e7c9b", m: "Curriculum, mentors, school MoUs" },
       { t: "5  Launch", s: "expo, open day, pitches", a: 7, b: 8, c: "#f2b53a", m: "Launch", dark: true },
-      { t: "Year 1 operations", s: "cohorts, M&E dashboard", a: 7, b: 12, c: "#2f8f5b", m: "First cohorts and quarterly impact reports" },
-      { t: "6  Scale", s: "county replication", a: 12, b: 13, c: "#0c1d22" },
+      { t: "Year 1 operations", s: "cohorts, M&E dashboard", a: 7, b: 12, c: "#17a2a6", m: "First cohorts and quarterly impact reports" },
+      { t: "6  Scale", s: "county replication", a: 12, b: 13, c: "#2a6f97" },
     ],
   },
 
@@ -143,10 +143,10 @@ window.SAVIT = {
     useOfFunds: [
       { t: "Structure and site", v: 18.71, c: "#b5412b" },
       { t: "Equipment, five zones", v: 11.67, c: "#e8622c" },
-      { t: "Energy and water", v: 3.65, c: "#2f8f5b" },
+      { t: "Energy and water", v: 3.65, c: "#17a2a6" },
       { t: "Design, approvals, pre-opening", v: 4.54, c: "#f2b53a" },
-      { t: "Contingency (15%)", v: 5.78, c: "#8fa3a0" },
-      { t: "18-month operating runway", v: 16.37, c: "#127c86" },
+      { t: "Contingency (15%)", v: 5.78, c: "#8fb0bf" },
+      { t: "18-month operating runway", v: 16.37, c: "#0b4f71" },
     ],
   },
 

@@ -171,12 +171,12 @@
     const n = steps.length;
     const defs = el("defs", {}, svg);
     const m = el("marker", { id: "arr", viewBox: "0 0 10 10", refX: 6, refY: 5, markerWidth: 7, markerHeight: 7, orient: "auto-start-reverse" }, defs);
-    el("path", { d: "M0,0 L10,5 L0,10 z", fill: "var(--c-eco)" }, m);
+    el("path", { d: "M0,0 L10,5 L0,10 z", fill: "var(--lagoon)" }, m);
     for (let i = 0; i < n; i++) {
       const a0 = (-90 + (360 / n) * i + 14) * Math.PI / 180;
       const a1 = (-90 + (360 / n) * (i + 1) - 14) * Math.PI / 180;
       const p0 = [cx + R * Math.cos(a0), cy + R * Math.sin(a0)], p1 = [cx + R * Math.cos(a1), cy + R * Math.sin(a1)];
-      const path = el("path", { d: `M${p0[0]},${p0[1]} A${R},${R} 0 0 1 ${p1[0]},${p1[1]}`, fill: "none", stroke: "var(--c-eco)", "stroke-width": 3, "marker-end": "url(#arr)", class: "flow" }, svg);
+      const path = el("path", { d: `M${p0[0]},${p0[1]} A${R},${R} 0 0 1 ${p1[0]},${p1[1]}`, fill: "none", stroke: "var(--lagoon)", "stroke-width": 3, "marker-end": "url(#arr)", class: "flow" }, svg);
       path.style.setProperty("--len", Math.ceil(R * (a1 - a0)) + 4);
       path.style.transitionDelay = i * 120 + "ms";
     }
@@ -185,7 +185,7 @@
       const x = cx + R * Math.cos(a), y = cy + R * Math.sin(a);
       const g = el("g", {}, svg);
       const last = i === n - 1;
-      el("circle", { cx: x, cy: y, r: 34, fill: last ? "var(--accent)" : "var(--paper)", stroke: last ? "var(--accent)" : "var(--c-eco)", "stroke-width": 2.5 }, g);
+      el("circle", { cx: x, cy: y, r: 34, fill: last ? "var(--accent)" : "var(--paper)", stroke: last ? "var(--accent)" : "var(--lagoon)", "stroke-width": 2.5 }, g);
       const num = el("text", { x, y: y + 6, "text-anchor": "middle", "font-family": "Inter, sans-serif", "font-weight": 800, "font-size": 19, fill: last ? "var(--accent-ink)" : "var(--ink)" }, g);
       num.textContent = String(i + 1);
       const lx = cx + (R + 64) * Math.cos(a), ly = cy + (R + 64) * Math.sin(a);
@@ -221,8 +221,9 @@
       const t2 = el("text", { x: 0, y: y + 37, "font-size": 12, fill: "var(--ink-3)" }, g);
       t2.textContent = st.s;
       const x0 = left + (barMax - w) / 2;
-      const col = i < 3 ? "var(--sea-2)" : i < 6 ? "var(--c-make)" : "var(--c-enterprise)";
-      el("rect", { x: x0, y: y + 4, width: w, height: rowH - 14, rx: 4, fill: col, opacity: 0.18 + 0.82 * (1 - i / stages.length) * 0 + 0.9 }, g);
+      const depth = Math.round((i / (stages.length - 1)) * 100);
+      const r = el("rect", { x: x0, y: y + 4, width: w, height: rowH - 14, rx: 4 }, g);
+      r.setAttribute("style", `fill: color-mix(in srgb, var(--sea) ${depth}%, var(--lagoon))`);
       const v = el("text", { x: left + barMax + 18, y: y + 28, "font-family": "Inter, sans-serif", "font-size": 14, fill: "var(--ink)", "font-weight": 600 }, g);
       v.textContent = st.label || st.v.toLocaleString("en-KE");
     });
@@ -336,6 +337,8 @@
       const proj = d3.geoMercator().fitExtent([[10, 10], [W - 130, H - 10]], { type: "FeatureCollection", features: af });
       const path = d3.geoPath(proj);
       const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Map of Africa highlighting Kenya, East Africa and the Mombasa flagship hub" });
+      el("rect", { x: 0, y: 0, width: W, height: H, rx: 18, class: "sea" }, svg);
+      el("path", { d: path(d3.geoGraticule().step([10, 10])()), class: "grat" }, svg);
       af.forEach((f) => el("path", { d: path(f), class: f.id === cfg.kenya ? "land kenya" : eaIds.has(f.id) ? "land ea" : "land" }, svg));
       const [mx, my] = proj(cfg.mombasa);
       [42, 26].forEach((rr, i) => el("circle", { cx: mx, cy: my, r: rr, class: "ring", opacity: i ? 0.9 : 0.45 }, svg));

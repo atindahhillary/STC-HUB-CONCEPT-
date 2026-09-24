@@ -19,6 +19,35 @@
     applyTheme(next); store(next); syncIcon();
   }));
 
+  /* ocean video: honour reduced motion and data saver, pause off-screen, user toggle */
+  const vid = $(".hero__video"), vbtn = $(".video-toggle");
+  if (vid) {
+    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const saveData = navigator.connection && navigator.connection.saveData;
+    let userPaused = !!(calm || saveData);
+    const setBtn = () => {
+      if (!vbtn) return;
+      const paused = vid.paused;
+      vbtn.setAttribute("aria-pressed", paused);
+      vbtn.setAttribute("aria-label", paused ? "Play background video" : "Pause background video");
+      vbtn.querySelector("i").className = paused ? "ph ph-play" : "ph ph-pause";
+    };
+    if (userPaused) { vid.removeAttribute("autoplay"); vid.pause(); }
+    vid.addEventListener("play", setBtn);
+    vid.addEventListener("pause", setBtn);
+    if (vbtn) vbtn.addEventListener("click", () => {
+      if (vid.paused) { userPaused = false; vid.play().catch(() => {}); }
+      else { userPaused = true; vid.pause(); }
+    });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(([e]) => {
+        if (e.isIntersecting && !userPaused) vid.play().catch(() => {});
+        else if (!e.isIntersecting) vid.pause();
+      }, { threshold: 0.05 }).observe(vid);
+    }
+    setBtn();
+  }
+
   /* nav */
   const nav = $(".nav");
   const sentinel = $("#top-sentinel");
