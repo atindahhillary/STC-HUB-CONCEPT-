@@ -75,6 +75,55 @@
     secs.forEach((s) => io.observe(s));
   }
 
+  /* count headline numbers up from zero when they first come into view */
+  const counters = $$(".fact__n, .stat__n, .kpi__row b, .ask__total").filter((n) => !n.hasAttribute("data-static"));
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (counters.length && !reduceMotion && "IntersectionObserver" in window) {
+    const items = [];
+    counters.forEach((node) => {
+      const tn = Array.from(node.childNodes).find((c) => c.nodeType === 3 && /\d/.test(c.nodeValue));
+      if (!tn) return;
+      const m = tn.nodeValue.match(/^(\D*?)([\d,]+(?:\.\d+)?)(.*)$/s);
+      if (!m) return;
+      const [, pre, num, post] = m;
+      const target = parseFloat(num.replace(/,/g, ""));
+      const decimals = (num.split(".")[1] || "").length;
+      const grouped = num.includes(",");
+      const fmt = (v) => {
+        const s = v.toFixed(decimals);
+        return grouped ? Number(s).toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) : s;
+      };
+      // screen readers get the final value; the animated digits are hidden from them
+      const live = document.createElement("span");
+      live.setAttribute("aria-hidden", "true");
+      live.textContent = pre + fmt(0) + post;
+      const sr = document.createElement("span");
+      sr.className = "sr-only";
+      sr.textContent = tn.nodeValue;
+      node.replaceChild(live, tn);
+      node.insertBefore(sr, live);
+      items.push({ node, live, pre, post, target, fmt });
+    });
+    const run = (it) => {
+      const dur = 1600 + Math.min(900, Math.log10(it.target + 1) * 220);
+      const t0 = performance.now();
+      const ease = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+      const step = (now) => {
+        const t = Math.min(1, (now - t0) / dur);
+        it.live.textContent = it.pre + it.fmt(it.target * ease(t)) + it.post;
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const co = new IntersectionObserver((ents) => ents.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const it = items.find((x) => x.node === e.target);
+      if (it) run(it);
+      co.unobserve(e.target);
+    }), { threshold: 0.6 });
+    items.forEach((it) => co.observe(it.node));
+  }
+
   /* reveal on scroll */
   const reveal = $$(".reveal, .draw");
   if ("IntersectionObserver" in window) {
